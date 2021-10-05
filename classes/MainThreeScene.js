@@ -1,4 +1,5 @@
 import * as THREE from "three"
+import Stats from 'three/examples/jsm/libs/stats.module'
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
@@ -25,6 +26,11 @@ class MainThreeScene {
 
         // MAIN SCENE INSTANCE
         this.scene = new THREE.Scene()
+
+        // Stats
+        this.stats = new Stats()
+        this.stats.showPanel(0)
+        document.body.appendChild(this.stats.dom)
 
         // CAMERA AND ORBIT CONTROLLER
         this.camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 1000)
@@ -63,7 +69,9 @@ class MainThreeScene {
     }
 
     update() {
+      this.stats.begin()
         this.renderer.render(this.scene, this.camera)
+      this.stats.end()
         this.bookSeeker.update()
         this.particleEmitter.update()
         this.timerModel.updateTimeRatio()

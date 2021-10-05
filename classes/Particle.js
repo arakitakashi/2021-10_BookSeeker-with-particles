@@ -9,13 +9,15 @@ import Util from './Util'
 import TimerModel from './TimerModel';
 
 export default class Partcle extends Sprite {
-  constructor(texture, color = 0x88ccff) {
+  constructor(texture, color = 0x88ccff, scene) {
     super(new SpriteMaterial({
       map: texture,
       color,
       transparent: true,
       blending: AdditiveBlending
     }))
+
+    this.scene = scene
 
     this.timerModel = new TimerModel()
 
@@ -34,7 +36,7 @@ export default class Partcle extends Sprite {
   init(radius, angle) {
     const rad = (angle * Math.PI) / 180
     const x = radius * Math.sin(rad)
-    const y = 4 * Math.sin(rad * 0.3)
+    const y = 20 * Math.sin(rad * 0.3)
     const z = radius * Math.cos(rad)
     this.position.set(x, y, z)
 
@@ -66,12 +68,18 @@ export default class Partcle extends Sprite {
     if(this._lifePoint < this._counter) {
       this.isAlive = false
     }
+
+    if(this.material.opacity < 0) {
+      this.scene.remove(this)
+      this.geometry.dispose()
+      this.material.dispose()
+    }
   }
 
-  dispose() {
-    this._counter = null
-    this._startPosition = null
-    this._velocity = null
-    this.material = null
-  }
+  // dispose() {
+  //   this._counter = null
+  //   this._startPosition = null
+  //   this._velocity = null
+  //   this.material = null
+  // }
 }

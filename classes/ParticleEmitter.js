@@ -1,4 +1,4 @@
-import { Object3D, TextureLoader } from 'three'
+import { Object3D, TextureLoader, Clock } from 'three'
 import Particle from './Particle';
 import DatGui from './DatGui'
 import TimerModel from './TimerModel'
@@ -7,6 +7,7 @@ export default class ParticleEmitter extends Object3D {
   constructor(scene) {
     super()
     this.scene = scene
+    this.clock = new Clock()
     this._particleNum = 0
     this._interval = 100
     this._angle = 0
@@ -33,10 +34,11 @@ export default class ParticleEmitter extends Object3D {
 
 
   update() {
+    const delta = this.clock.getDelta() * 50
     if(!this._texture) {
       return
     }
-    const incrementNumber = 7 * this.timerModel.getTimeRatio()
+    const incrementNumber = 7 * delta
     this._angle += incrementNumber
 
     let notAliveNum = 0
@@ -82,7 +84,7 @@ export default class ParticleEmitter extends Object3D {
 
     const rand = Math.floor(Math.random() * 3)
     const color = this._colorList[rand]
-    const particle = new Particle(this._texture, color)
+    const particle = new Particle(this._texture, color, this.scene)
     particle.visible = false
     this.add(particle)
   }

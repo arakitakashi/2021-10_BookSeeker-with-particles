@@ -9,7 +9,7 @@ class DatGui extends EventDispatcher {
     }
 
     this.particleNum = 500
-    this.particleMaxNum = 4000
+    this.particleMaxNum = 1500
     this.timeRatioMode = false
 
     if(this.GUI){
